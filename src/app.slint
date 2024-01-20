@@ -1,0 +1,50 @@
+import { LineEdit , Button, VerticalBox, HorizontalBox, Slider} from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    width: 300px;
+    height: 120px;
+
+    callback start_ddos();
+    out property <int> threads: 10;
+    out property <string> target: "http://localhost:8000";
+    in property <bool> running: false;
+
+    VerticalBox {
+        Text {
+            text: "Blazingly Fast";
+            font-size: 2rem;
+            horizontal-alignment: center;
+        }
+        HorizontalBox {
+            height: 30px;
+            width: root.width;
+
+            LineEdit {
+                height: parent.height;
+                placeholder-text: "Target URL";
+                text: "http://localhost:8000";
+
+                edited(text) => {root.target = text}
+            }
+            Button {
+                height: parent.height;
+                text: running ? "Stop" : "Attack";
+                clicked => {root.start_ddos()}
+            }
+        }
+        HorizontalBox {
+            Text {
+                text: "Threads: ";
+            }
+            Slider {
+                minimum: 0.0;
+                maximum: 100.0;
+                value: 10;
+                changed(value) => {root.threads = value}
+            }
+            Text {
+                text: root.threads;
+            }
+        }
+    }
+}
